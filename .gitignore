@@ -1,0 +1,22 @@
+# Secrets — never commit
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Generated data artifacts (rebuilt by setup_db.py / setup_rag.py)
+data/incidents.db
+data/chroma_db/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,72 @@
+SERVER RUNBOOK 
+
+OUTOFMEMORYERROR:
+Cause: Memory leak in application code or insufficient heap size.
+Fix: Restart the service immediately. Check for memory leaks using heap dump.
+Increase JVM heap size with -Xmx flag. Monitor with Grafana dashboard.
+Team: backend-team
+Severity: high
+
+CPU SPIKE:
+Cause: Infinite loop, high traffic, or runaway process.
+Fix: Identify the process using top command. Kill runaway process.
+Check for recent deployments that may have introduced the loop.
+Scale horizontally if traffic-related.
+Team: infra-team
+Severity: high
+
+DATABASE CONNECTION TIMEOUT:
+Cause: Connection pool exhausted or database overloaded.
+Fix: Increase connection pool size. Restart connection pool.
+Check database server load. Add read replicas if needed.
+Team: database-team
+Severity: medium
+
+DISK FULL:
+Cause: Log files accumulating or large temp files not cleaned.
+Fix: Run log rotation. Delete old temp files in /tmp directory.
+Archive old logs to S3. Set up automated cleanup cron job.
+Team: infra-team
+Severity: medium
+
+NETWORK TIMEOUT:
+Cause: DNS resolution failure or firewall rule blocking traffic.
+Fix: Check DNS settings. Verify firewall rules. Test with ping.
+Check if external service is down using status pages.
+Team: network-team
+Severity: medium
+
+POD CRASHLOOPBACKOFF:
+Cause: Application crash on startup, missing env vars, or bad config.
+Fix: Check pod logs with kubectl logs. Verify environment variables.
+Check config maps and secrets. Rollback last deployment if needed.
+Team: devops-team
+Severity: high
+
+SERVICE UNAVAILABLE:
+Cause: All instances down or load balancer misconfigured.
+Fix: Check all service instances. Verify load balancer health checks.
+Restart unhealthy instances. Check recent config changes.
+Team: devops-team
+Severity: critical
+
+KERNEL PANIC:
+Cause: Hardware failure or critical kernel bug.
+Fix: Reboot server immediately. Check hardware health after reboot.
+Review kernel logs. Replace faulty hardware if needed.
+Team: infra-team
+Severity: critical
+
+HIGH MEMORY USAGE:
+Cause: Memory leak or insufficient RAM for workload.
+Fix: Identify memory-hungry processes. Restart leaking services.
+Consider scaling up server RAM or optimizing application.
+Team: backend-team
+Severity: medium
+
+SSL CERTIFICATE EXPIRED:
+Cause: Certificate not renewed before expiry date.
+Fix: Renew SSL certificate immediately. Update in load balancer.
+Set up auto-renewal with certbot to prevent future expiry.
+Team: devops-team
+Severity: high

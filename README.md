@@ -1,31 +1,139 @@
-## Hi there 👋 It's me Praveen K S 
+# 🛰️ Backtrace
 
-Aspiring AI&ML Engineer
-<br/>
-Currently pursuing 3rd yr in <br/> Vel Tech High Tech Engineering College <br/>
-<img align="right" width="370" height="290" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXAwMDFnODByemF2cXFkeG9vcDMzYzUwOWs2Zm5weWkwNjU5MHgzYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8MyXEVgue4ucw/giphy.gif">
-- 🔭 Here's my [portfolio](https://praveenportfolio-one.vercel.app/)                                              
-- 🌱 I’m currently learning out of curiosity
-- ⚡ Fun fact: I am a Anime fan.
-- Social Presence
- <br /> [<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />](https://www.linkedin.com/in/praveen-ks-661646302/) <br/> [<img src="https://img.shields.io/badge/instagram-d62976?style=for-the-badge&logo=instagram&logoColor=white" />](https://www.instagram.com/praveen_ks_15/)
-- ![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCJ3S5t1HYylBbP4GPfFusIw)
-- ![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCJ3S5t1HYylBbP4GPfFusIw)
+**Multi-agent DevOps incident investigation pipeline.** Feed it a server name, an
+error log, and a timestamp — eight specialized AI agents read the logs, inspect
+incident history, retrieve the matching runbook, pin down the root cause, score
+severity, escalate if needed, and hand back a step-by-step work order.
 
-### I code in
-<img height="50" width="50" src="https://img.icons8.com/color/48/000000/python.png" /> <img height="50" width="50" src="https://img.icons8.com/color/48/000000/java-coffee-cup-logo.png" /> <img height="50" width="50" src="https://img.icons8.com/color/48/000000/html-5.png" /> <img height="50" width="50" src="https://img.icons8.com/color/48/000000/css3.png" /> <img height="50" width="50" src="https://img.icons8.com/color/48/000000/bootstrap.png" />
-<img height="50" width="50" src="https://img.icons8.com/color/48/000000/javascript.png"/><img height="50" width="50" src="https://img.icons8.com/color/48/000000/tensorflow.png"/>
+Built with **LangGraph** for agent orchestration and **Groq** (Llama 3.3 70B) for
+fast inference.
 
-### IDE and Tools I Use
-<img height="50" width="50" src="https://img.icons8.com/color/48/000000/visual-studio-code-2019.png"/> <img height="50" width="50" src="https://img.icons8.com/color/48/000000/pycharm.png"/> <img height="50" width="50" src="https://img.icons8.com/color/50/000000/git.png"/><img height="50" src="https://img.icons8.com/officel/480/null/java-eclipse.png"/> <img height="50" width="50" src="https://img.icons8.com/color/48/000000/figma--v1.png"/>
+---
 
+## 🧠 How it works
 
-### 💻 Workspace Spec
+Every incident flows through a dedicated chain of agents. Each agent reads from a
+shared `IncidentState` and writes its findings back for the next one.
 
-[![Dell G15](https://img.shields.io/badge/Dell-G15_5520-007DB8?logo=dell&logoColor=white)](https://dell.com)
-[![Intel](https://img.shields.io/badge/Intel-Core_i5_12th-0071C5?logo=intel&logoColor=white)](https://intel.com)
-[![NVIDIA](https://img.shields.io/badge/NVIDIA-RTX_3050-76B900?logo=nvidia&logoColor=white)](https://nvidia.com)
-[![RAM](https://img.shields.io/badge/RAM-16GB_DDR4-important)](https://)
-[![Storage](https://img.shields.io/badge/Storage-512GB_SSD-blueviolet)](https://)
+```mermaid
+flowchart TD
+    A[1 · Validator] -->|valid| B[2 · Log Analyst]
+    A -->|invalid| Z((End))
+    B --> C[3 · DB Inspector]
+    C --> D[4 · Doc Retriever · RAG]
+    D --> E[5 · Root Cause]
+    E --> F[6 · Severity Checker]
+    F -->|escalate| G[7 · Escalation]
+    F -->|normal| H[8 · Work Order]
+    G --> H
+    H --> Z((End))
+```
 
-[![Praveen's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=Praveen7123&bg_color=0d0d0c&color=0d09f1&line=0252f2&point=0d54e3&area=true&hide_border=true)](https://github.com/ashutosh00710/github-readme-activity-graph)
+| # | Agent | Responsibility |
+|---|-------|----------------|
+| 1 | **Validator** | Checks the inputs are present and well-formed |
+| 2 | **Log Analyst** | Extracts error patterns, stack traces and failure type |
+| 3 | **DB Inspector** | Correlates past incidents and recent deployments (SQLite) |
+| 4 | **Doc Retriever** | Pulls the relevant runbook fix via RAG (Chroma + embeddings) |
+| 5 | **Root Cause** | Synthesizes every signal into one clear cause |
+| 6 | **Severity Checker** | Scores severity (low → critical) and flags escalation |
+| 7 | **Escalation** | Drafts a paging notice when severity is high/critical |
+| 8 | **Work Order** | Generates step-by-step remediation instructions |
+
+---
+
+## 🧰 Tech stack
+
+- **LangGraph** — agent graph / state machine
+- **LangChain + Groq** — LLM calls (`llama-3.3-70b-versatile`)
+- **ChromaDB + sentence-transformers** — runbook retrieval (RAG)
+- **SQLite** — incident & deployment history
+- **FastAPI + Uvicorn** — HTTP API
+- **PyGithub** — commit inspection (optional)
+
+---
+
+## 🚀 Getting started
+
+### 1. Clone & install
+
+```bash
+git clone https://github.com/Praveen7123/backtrace.git
+cd backtrace
+python -m venv .venv
+# Windows:  .venv\Scripts\activate
+# macOS/Linux:  source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 2. Configure secrets
+
+Create a `.env` file in the project root (it is git-ignored):
+
+```env
+GROQ_API_KEY=your_groq_api_key_here
+GITHUB_TOKEN=your_github_token_here   # optional, for commit inspection
+```
+
+> Get a free Groq API key at https://console.groq.com
+
+### 3. Run it
+
+**CLI** — runs a sample incident end to end (sets up the DB + RAG on first run):
+
+```bash
+python main.py
+```
+
+**API** — start the HTTP server:
+
+```bash
+uvicorn api:app --reload --port 8000
+```
+
+Then send an incident:
+
+```bash
+curl -X POST http://localhost:8000/investigate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "server_name": "prod-01",
+    "incident_time": "2024-03-10 14:23:45",
+    "github_repo": "",
+    "error_log": "2024-03-10 14:23:45 ERROR OutOfMemoryError: Java heap space"
+  }'
+```
+
+The response contains the validation result, log/DB/runbook findings, root cause,
+severity, escalation, work order, and assigned team.
+
+---
+
+## 📁 Project structure
+
+```
+backtrace/
+├── api.py              # FastAPI bridge (POST /investigate, GET /health)
+├── main.py             # CLI entry point
+├── config.py           # Env + paths
+├── requirements.txt
+├── data/
+│   ├── setup_db.py     # Seeds the SQLite incident/deployment DB
+│   └── runbooks/       # Source runbooks indexed for RAG
+└── src/
+    ├── graph/          # LangGraph wiring
+    ├── agents/nodes/   # The 8 agents
+    ├── rag/            # Chroma setup + retriever
+    ├── schemas/        # Shared IncidentState + structured outputs
+    └── tools/          # DB, RAG and GitHub tools
+```
+
+> `data/incidents.db` and `data/chroma_db/` are generated automatically and are
+> not tracked in git.
+
+---
+
+### 👤 Author
+
+**Praveen K S** — [Portfolio](https://praveenportfolio-one.vercel.app/) ·
+[LinkedIn](https://www.linkedin.com/in/praveen-ks-661646302/)

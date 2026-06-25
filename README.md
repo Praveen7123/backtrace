@@ -1,4 +1,4 @@
-# 🛰️ Backtrace
+# 🛰️ Backtraces
 
 **Multi-agent DevOps incident investigation pipeline.** Feed it a server name, an
 error log, and a timestamp — eight specialized AI agents read the logs, inspect
